@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
 
 const AllItems = () => {
   return (
     <View>
-      <Text>AllItems</Text>
+      <Text>All Items</Text>
     </View>
   );
 };
