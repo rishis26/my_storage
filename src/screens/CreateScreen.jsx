@@ -1,3 +1,4 @@
+// Import React hooks and React Native components
 import { useState } from 'react';
 import {
   StyleSheet,
@@ -6,22 +7,64 @@ import {
   TextInput,
   Pressable,
   FlatList,
-  ViewBase,
 } from 'react-native';
 
 const CreateScreen = ({ data, setData }) => {
+  // State for item name input
   const [iteamName, setiteamName] = useState('');
+  // State for stock amount input
   const [stockAmt, setstockAmt] = useState('');
+  // State to track if we're in edit mode
+  const [isEdit, setIsEdit] = useState(false);
+  // State to store the ID of the item being edited
+  const [editingId, setEditingId] = useState(null);
 
+  // Handler function to add new item or update existing item
   const handlerAddIteam = () => {
-    const newDataItem = {
-      id: data.length + 1,
-      name: iteamName,
-      stock: stockAmt,
-      unit: 'kg',
-    };
+    if (isEdit) {
+      // Update existing item
+      setData(
+        data.map(item =>
+          item.id === editingId
+            ? { ...item, name: iteamName, stock: parseInt(stockAmt) || 0 }
+            : item,
+        ),
+      );
+    } else {
+      // Add new item
+      const newDataItem = {
+        id: data.length + 1,
+        name: iteamName,
+        stock: parseInt(stockAmt) || 0,
+        unit: 'kg',
+      };
+      setData([...data, newDataItem]);
+    }
 
-    setData([...data, newDataItem]);
+    // Clear form and reset edit mode
+    setiteamName('');
+    setstockAmt('');
+    setIsEdit(false);
+    setEditingId(null);
+  };
+
+  // Handler function to delete an item
+  const handleDelete = id => {
+    setData(data.filter(item => item.id !== id));
+  };
+
+  // Handler function to populate form with item data for editing
+  const handleEdit = item => {
+    setIsEdit(true);
+    setEditingId(item.id);
+    setiteamName(item.name);
+    setstockAmt(item.stock.toString());
+  };
+
+  // Handler function to cancel editing
+  const handleCancelEdit = () => {
+    setIsEdit(false);
+    setEditingId(null);
     setiteamName('');
     setstockAmt('');
   };
@@ -41,10 +84,30 @@ const CreateScreen = ({ data, setData }) => {
         style={styles.input}
         value={stockAmt}
         onChangeText={item => setstockAmt(item)}
+        keyboardType="numeric"
       />
-      <Pressable style={styles.button} onPress={() => handlerAddIteam()}>
-        <Text style={styles.buttonText}>ADD ITEAM IN STOCK</Text>
-      </Pressable>
+
+      {/* Button container - shows cancel button when editing */}
+      <View style={{ flexDirection: 'row', gap: 10 }}>
+        <Pressable
+          style={[styles.button, { flex: 1 }]}
+          onPress={() => handlerAddIteam()}
+        >
+          <Text style={styles.buttonText}>
+            {isEdit ? 'UPDATE ITEM' : 'ADD ITEM IN STOCK'}
+          </Text>
+        </Pressable>
+
+        {/* Show cancel button only when editing */}
+        {isEdit && (
+          <Pressable
+            style={[styles.button, styles.cancelButton, { flex: 0.4 }]}
+            onPress={handleCancelEdit}
+          >
+            <Text style={styles.buttonText}>CANCEL</Text>
+          </Pressable>
+        )}
+      </View>
 
       <View style={{ marginTop: 10 }}>
         <View style={styles.headerContainer}>
@@ -69,8 +132,13 @@ const CreateScreen = ({ data, setData }) => {
               </Text>
 
               <View style={{ flexDirection: 'row', gap: 10 }}>
-                <Text style={styles.itemText}> Edit</Text>
-                <Text style={styles.itemText}> Delete</Text>
+                <Pressable onPress={() => handleEdit(item)}>
+                  <Text style={styles.itemText}> Edit</Text>
+                </Pressable>
+
+                <Pressable onPress={() => handleDelete(item.id)}>
+                  <Text style={styles.itemText}> Delete</Text>
+                </Pressable>
               </View>
             </View>
           )}
@@ -102,6 +170,10 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  // Cancel button style (red/orange color)
+  cancelButton: {
+    backgroundColor: '#FF6B6B',
   },
   buttonText: {
     color: 'white',
