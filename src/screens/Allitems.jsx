@@ -1,15 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import HomeScreen from './src/screens/HomeScreen';
 
-const App = () => {
+const AllItems = () => {
   return (
-    <View style={{ flex: 1 }}>
-      <HomeScreen />
+    <View>
+      <Text>AllItems</Text>
     </View>
   );
 };
 
-export default App;
+export default AllItems;
 
 const styles = StyleSheet.create({});
