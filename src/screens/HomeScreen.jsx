@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   button: {
-    paddingVertical: 5,
+    paddingVertical: 3.5,
     paddingHorizontal: 10,
     borderRadius: 50,
     borderWidth: 0.8,
