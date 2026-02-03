@@ -3,31 +3,35 @@ import { useState } from 'react';
 
 import AllItems from '../screens/Allitems.jsx';
 import CreateScreen from '../screens/CreateScreen.jsx';
-
 const data = [
   {
     id: 1,
     name: 'Wheat',
+    stock: 5,
     unit: 'kg',
   },
   {
     id: 2,
     name: 'Rice',
+    stock: 15,
     unit: 'kg',
   },
   {
     id: 3,
     name: 'Basmati rice',
+    stock: 25,
     unit: 'kg',
   },
   {
     id: 4,
-    name: 'pulse',
+    name: 'Pulse',
+    stock: 50,
     unit: 'kg',
   },
   {
     id: 5,
     name: 'Corn',
+    stock: 19,
     unit: 'kg',
   },
 ];
@@ -38,11 +42,12 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Dashboard</Text>
+
       <View style={styles.buttonContainer}>
         <Pressable
           style={[
             styles.button,
-            view === 0 ? { backgroundColor: 'green' } : null,
+            view === 0 ? { backgroundColor: '#72C37AFF' } : null,
           ]}
           onPress={() => setview(0)}
         >
@@ -52,10 +57,11 @@ const HomeScreen = () => {
             All Items
           </Text>
         </Pressable>
+
         <Pressable
           style={[
             styles.button,
-            view === 1 ? { backgroundColor: 'green' } : null,
+            view === 1 ? { backgroundColor: '#72C37AFF' } : null,
           ]}
           onPress={() => setview(1)}
         >
@@ -65,10 +71,11 @@ const HomeScreen = () => {
             Low stock
           </Text>
         </Pressable>
+
         <Pressable
           style={[
             styles.button,
-            view === 2 ? { backgroundColor: 'green' } : null,
+            view === 2 ? { backgroundColor: '#72C37AFF' } : null,
           ]}
           onPress={() => setview(2)}
         >
@@ -79,8 +86,9 @@ const HomeScreen = () => {
           </Text>
         </Pressable>
       </View>
+
       {view == 0 && <AllItems data={data} />}
-      {view == 1 && <AllItems />}
+      {view == 1 && <AllItems data={data.filter(item => item.stock < 20)} />}
       {view == 2 && <CreateScreen />}
     </View>
   );
@@ -95,25 +103,29 @@ const styles = StyleSheet.create({
     padding: '8%',
     backgroundColor: '#ffffff',
   },
+
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
   },
+
   buttonContainer: {
     marginVertical: 10,
     flexDirection: 'row',
     gap: 10,
   },
+
   button: {
     paddingVertical: 3.5,
     paddingHorizontal: 10,
     borderRadius: 50,
     borderWidth: 0.8,
-    borderColor: 'green',
+    borderColor: '#72C37AFF',
   },
+
   btnText: {
-    color: 'green',
-    fontSize: 12,
+    color: '#72C37AFF',
+    fontSize: 14,
   },
 });
