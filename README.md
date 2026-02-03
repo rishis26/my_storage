@@ -499,6 +499,8 @@ If you have any questions or run into issues:
 2. Review [React Native Documentation](https://reactnative.dev/docs/getting-started)
 3. Open an issue on GitHub
 
+---
+
 **Made with ❤️ by Rishi Shah**
 
 _Learning React Native one component at a time!_ 🚀
